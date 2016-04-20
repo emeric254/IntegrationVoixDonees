@@ -1,0 +1,173 @@
+Routeur3#sh run
+Building configuration...
+
+Current configuration : 2131 bytes
+!
+! Last configuration change at 17:03:58 UTC Wed Apr 13 2016
+!
+version 15.5
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname Routeur3
+!
+boot-start-marker
+boot-end-marker
+!
+!
+!
+no aaa new-model
+ethernet lmi ce
+bsd-client server url https://cloudsso.cisco.com/as/token.oauth2
+!
+!
+!
+!         
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+
+
+!
+!
+!
+!
+ip cef
+no ipv6 cef
+!
+multilink bundle-name authenticated
+!
+!
+!         
+cts logging verbose
+!
+!
+license udi pid CISCO2911/K9 sn FCZ175060UU
+license boot module c2900 technology-package datak9
+!
+!
+!
+redundancy
+!
+!
+!
+!
+!
+!
+class-map match-all argent
+ match dscp af31 
+class-map match-any bronze
+ match dscp af11 
+ match dscp af13 
+class-map match-all or
+ match dscp ef 
+!         
+policy-map outpu
+policy-map output
+ class or
+  bandwidth percent 50 
+ class argent
+  bandwidth percent 30 
+ class bronze
+  bandwidth percent 10 
+ class class-default
+  bandwidth percent 5 
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface Embedded-Service-Engine0/0
+ no ip address
+ shutdown
+!
+interface GigabitEthernet0/0
+ ip address 1.3.0.1 255.255.0.0
+ duplex auto
+ speed auto
+ service-policy output output
+!
+interface GigabitEthernet0/1
+ no ip address
+ shutdown
+ duplex auto
+ speed auto
+!
+interface GigabitEthernet0/2
+ no ip address
+ shutdown
+ duplex auto
+ speed auto
+!
+interface Serial0/0/0
+ ip address 1.100.0.1 255.255.0.0
+ service-policy output output
+!
+interface Serial0/0/1
+ no ip address
+ shutdown
+ clock rate 2000000
+!
+interface FastEthernet0/2/0
+ no ip address
+!
+interface FastEthernet0/2/1
+ no ip address
+!
+interface FastEthernet0/2/2
+ no ip address
+!
+interface FastEthernet0/2/3
+ no ip address
+!
+interface Vlan1
+ no ip address
+!
+!
+ip forward-protocol nd
+!
+no ip http server
+no ip http secure-server
+!
+ip route 1.1.0.0 255.255.0.0 1.3.0.2
+ip route 1.2.0.0 255.255.0.0 1.3.0.3
+ip route 1.4.0.0 255.255.0.0 1.100.0.2
+!
+!
+!
+!
+control-plane
+!
+!
+!
+line con 0
+line aux 0
+line 2
+ no activation-character
+ no exec
+ transport preferred none
+ transport output lat pad telnet rlogin lapb-ta mop udptn v120 ssh
+ stopbits 1
+line vty 0 4
+ login
+ transport input none
+!
+scheduler allocate 20000 1000
+!
+end
+
+ 
