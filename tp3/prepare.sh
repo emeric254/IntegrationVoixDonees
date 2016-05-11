@@ -17,3 +17,5 @@ ip a f dev eth0
 ip r f dev eth0
 
 ip a a 1.1.0.1/16 dev eth0
+ip a a 1.2.0.254/16 dev eth0
+ip a a 1.3.0.254/16 dev eth0
